@@ -1,0 +1,8 @@
+{
+  "name": "Nexora Monetize",
+  "description": "Premium SaaS monetization platform featuring an AI monetization advisor, step-by-step earnings calculations, interactive channel guides, subscription billing simulation, and Google AdSense presets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

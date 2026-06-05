@@ -1,0 +1,97 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net default catch-all: DENY ALL
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reuseable global functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Helper entities validations mapping to /firebase-blueprint.json
+    function isValidUserSession(data) {
+      return data.keys().hasAll(['uid', 'email', 'subscription', 'targetMonthlyGoal']) &&
+             data.uid is string &&
+             data.email is string &&
+             data.email.size() <= 256 &&
+             (data.subscription == 'free' || data.subscription == 'pro' || data.subscription == 'premium') &&
+             data.targetMonthlyGoal is number;
+    }
+
+    function isValidChat(data) {
+      return data.keys().hasAll(['id', 'title', 'messages', 'updatedAt']) &&
+             data.id is string &&
+             data.id.size() <= 128 &&
+             data.title is string &&
+             data.title.size() <= 256 &&
+             data.messages is list &&
+             data.messages.size() <= 200 &&
+             data.updatedAt is string;
+    }
+
+    function isValidPlan(data) {
+      return data.keys().hasAll(['id', 'channelId', 'title', 'monthlyRevenueEst', 'parameters', 'createdAt']) &&
+             data.id is string &&
+             data.id.size() <= 128 &&
+             data.channelId is string &&
+             data.title is string &&
+             data.title.size() <= 256 &&
+             data.monthlyRevenueEst is number &&
+             data.parameters is map &&
+             data.createdAt is string;
+    }
+
+    function isValidTransaction(data) {
+      return data.keys().hasAll(['id', 'email', 'plan', 'amount', 'status', 'timestamp', 'payment_type']) &&
+             data.id is string &&
+             data.id.size() <= 128 &&
+             data.email is string &&
+             data.plan is string &&
+             data.amount is number &&
+             data.status is string &&
+             data.timestamp is string &&
+             data.payment_type is string;
+    }
+
+    // Rules scopes and boundaries
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUserSession(request.resource.data);
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUserSession(request.resource.data);
+      allow delete: if false; // System accounts are persistent and cannot be deleted
+
+      // Nested Saved Chat collection
+      match /chats/{chatId} {
+        allow get, list: if isOwner(userId) && isValidId(chatId);
+        allow create, update: if isOwner(userId) && isValidId(chatId) && isValidChat(request.resource.data);
+        allow delete: if isOwner(userId) && isValidId(chatId);
+      }
+
+      // Nested Custom Saved Monetization Formula Plans
+      match /plans/{planId} {
+        allow get, list: if isOwner(userId) && isValidId(planId);
+        allow create, update: if isOwner(userId) && isValidId(planId) && isValidPlan(request.resource.data);
+        allow delete: if isOwner(userId) && isValidId(planId);
+      }
+
+      // Nested Transactions checkout ledger
+      match /transactions/{transactionId} {
+        allow get, list: if isOwner(userId) && isValidId(transactionId);
+        allow create: if isOwner(userId) && isValidId(transactionId) && isValidTransaction(request.resource.data);
+        allow update, delete: if false; // Immutability protection pattern enforced
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "entities": {
+    "UserSession": {
+      "title": "UserSession",
+      "description": "User profile and configuration settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "subscription": { "type": "string", "enum": ["free", "pro", "premium"] },
+        "targetMonthlyGoal": { "type": "number" },
+        "joinedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "subscription", "targetMonthlyGoal"]
+    },
+    "SavedChat": {
+      "title": "SavedChat",
+      "description": "A saved discussion thread of messages",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "messages": {
+          "type": "array",
+          "description": "The sequence of messages in the dialogue"
+        },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "messages", "updatedAt"]
+    },
+    "SavedPlan": {
+      "title": "SavedPlan",
+      "description": "A customized monetization formula plan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "channelId": { "type": "string" },
+        "title": { "type": "string" },
+        "monthlyRevenueEst": { "type": "number" },
+        "parameters": { "type": "object" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "channelId", "title", "monthlyRevenueEst", "parameters", "createdAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "SIM/production transaction billing log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "plan": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "sender_mobile": { "type": "string" },
+        "payment_type": { "type": "string" }
+      },
+      "required": ["id", "email", "plan", "amount", "status", "timestamp", "payment_type"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserSession",
+      "description": "Database schema for registering active members"
+    },
+    "/users/{userId}/chats/{chatId}": {
+      "schema": "SavedChat",
+      "description": "Protected private micro chats generated inside active session"
+    },
+    "/users/{userId}/plans/{planId}": {
+      "schema": "SavedPlan",
+      "description": "Protected custom revenue calculations created inside account session"
+    },
+    "/users/{userId}/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Locked billing log logs verified by the active credentials owner"
+    }
+  }
+}
