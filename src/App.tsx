@@ -101,7 +101,7 @@ export default function App() {
             const nickname = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Maker';
             syncedSession = {
               uid: firebaseUser.uid,
-              email: firebaseUser.email || 'developer@nexora.com',
+              email: firebaseUser.email || 'developer@nexoramonetize.com',
               displayName: nickname,
               subscription: 'free',
               targetMonthlyGoal: 3000,
@@ -321,8 +321,8 @@ export default function App() {
     return [
       'russelblackstorm116@gmail.com',
       'russellblackstorm116@gmail.com',
-      'developer@nexora.com',
-      'admin@nexora.com'
+      'developer@nexoramonetize.com',
+      'admin@nexoramonetize.com'
     ].includes(session.email.toLowerCase());
   };
 

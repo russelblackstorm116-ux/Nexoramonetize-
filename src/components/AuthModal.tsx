@@ -289,7 +289,7 @@ export default function AuthModal({ onClose, onAuthSuccess, initialTab = 'login'
               </button>
               <button 
                 type="button"
-                onClick={() => handleQuickLogin('guest_maker@nexora.com', 'free', 2000)}
+                onClick={() => handleQuickLogin('guest_maker@nexoramonetize.com', 'free', 2000)}
                 className="w-full p-2 bg-slate-950 text-[11px] text-teal-400 hover:text-teal-300 font-mono flex justify-between items-center border border-slate-800/80 hover:border-teal-500/30 rounded-lg transition-all"
               >
                 <span>Guest Maker</span>
