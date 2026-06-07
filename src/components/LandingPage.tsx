@@ -13,7 +13,8 @@ import {
   BookOpen, 
   Sparkles, 
   CheckCircle2,
-  DollarSign
+  DollarSign,
+  Download
 } from 'lucide-react';
 import { SubscriptionTier } from '../types';
 import { useLanguage } from '../context/LanguageContext';
@@ -31,9 +32,10 @@ export default function LandingPage({
   onLoginClick,
   isAuthenticated 
 }: LandingPageProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [calculatorChannel, setCalculatorChannel] = useState<'youtube' | 'tiktok' | 'blogging'>('youtube');
   const [calcMetrics, setCalcMetrics] = useState<number>(100000); // views/pageviews
+  const [showItchKit, setShowItchKit] = useState(false);
 
   // Quick estimator formula
   const getEstimatedRevenue = () => {

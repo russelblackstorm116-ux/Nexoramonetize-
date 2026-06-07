@@ -52,7 +52,7 @@ export default function Dashboard({
   useEffect(() => {
     if (!adsenseEnabled) return;
 
-    const pubId = localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-0000000000000000';
+    const pubId = localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-5340486277299258';
     
     // Check if script already exists to avoid duplication
     const existingScript = document.getElementById('adsense-real-script') as HTMLScriptElement;
@@ -315,7 +315,7 @@ export default function Dashboard({
               <div className="p-4 rounded-xl border border-dashed border-emerald-500/30 bg-slate-950 text-center relative overflow-hidden select-text space-y-3">
                 <div className="flex items-center justify-between text-[9px] font-mono text-emerald-400">
                   <span className="font-extrabold uppercase tracking-widest">REAL ADSENSE LIVE</span>
-                  <span className="opacity-75">{localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-0000000000000000'}</span>
+                  <span className="opacity-75">{localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-5340486277299258'}</span>
                 </div>
                 
                 {/* Genuine AdSense element tag required to fetch live inventory */}
@@ -323,7 +323,7 @@ export default function Dashboard({
                   <ins 
                     className="adsbygoogle"
                     style={{ display: 'block', width: '100%', minHeight: '100px' }}
-                    data-ad-client={localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-0000000000000000'}
+                    data-ad-client={localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-5340486277299258'}
                     data-ad-slot={localStorage.getItem('nexora_adsense_slot_id') || '1234567890'}
                     data-ad-format="auto"
                     data-full-width-responsive="true"

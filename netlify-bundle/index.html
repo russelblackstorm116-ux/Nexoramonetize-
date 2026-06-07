@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="google-site-verification" content="WqccsBIZ6JZvY8qmti93Kg6F3ffBLKVioX-UTmEajPE" />
+  
+  <title>Nexora Monetize | Systèmes de Revenu Passif</title>
+  
+  <meta name="description" content="Simulateur intelligent de monétisation SaaS et boussole d’audit de canaux publicitaires pour les créateurs de contenu indépendants et développeurs.">
+  <meta name="keywords" content="Nexora, Monetize, SaaS, Google AdSense, Revenue, Airtel Money, PayPal, Passive Income, Calculator">
+  <meta name="author" content="Nexora Monetize">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nexora-monetize-336580506297.europe-west2.run.app">
+  <meta property="og:title" content="Nexora Monetize | Systèmes de Revenu Passif">
+  <meta property="og:description" content="Simulateur intelligent de monétisation SaaS et boussole d’audit de canaux publicitaires.">
+  <meta property="og:image" content="https://nexora-monetize-336580506297.europe-west2.run.app/itch-cover.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Nexora Monetize | Systèmes de Revenu Passif">
+  <meta property="twitter:description" content="Simulateur intelligent de monétisation SaaS et boussole d’audit de canaux publicitaires.">
+  <meta property="twitter:image" content="https://nexora-monetize-336580506297.europe-west2.run.app/itch-cover.png">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #020617; /* Slate sombre élégant assorti à l'application */
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="nexora-frame" src="https://nexora-monetize-336580506297.europe-west2.run.app/" allow="geolocation; microphone; camera; clipboard-write"></iframe>
+
+  <script>
+    // Transmettre dynamiquement le chemin et les paramètres de recherche d'URL à l'iframe
+    (function() {
+      try {
+        const baseUrl = "https://nexora-monetize-336580506297.europe-west2.run.app";
+        const currentPath = window.location.pathname;
+        const currentSearch = window.location.search;
+        
+        let targetPath = currentPath;
+        if (targetPath.endsWith('index.html')) {
+          targetPath = '/';
+        }
+        
+        const iframeUrl = baseUrl + (targetPath === '/' ? '' : targetPath) + currentSearch;
+        document.getElementById('nexora-frame').src = iframeUrl;
+      } catch (e) {
+        console.warn("Erreur d'initialisation de l'iframe URL:", e);
+      }
+    })();
+  </script>
+</body>
+</html>

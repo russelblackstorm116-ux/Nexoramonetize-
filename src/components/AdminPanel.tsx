@@ -79,7 +79,7 @@ export default function AdminPanel({ onToggleAdSense, adsenseEnabled }: AdminPan
   }, []);
 
   const [adsensePubId, setAdsensePubId] = useState(
-    localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-0000000000000000'
+    localStorage.getItem('nexora_adsense_pub_id') || 'ca-pub-5340486277299258'
   );
   const [adsenseSlotId, setAdsenseSlotId] = useState(
     localStorage.getItem('nexora_adsense_slot_id') || '1234567890'

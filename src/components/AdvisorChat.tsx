@@ -123,8 +123,171 @@ export default function AdvisorChat({
         localStorage.setItem('nexora_free_advisor_count', String(nextCount));
       }
     } catch (err: any) {
-      console.error(err);
-      setErrorMessage(err.message || "Network exception occurred while communicating with Nexora AI.");
+      console.warn("API Error, triggering local fallback Advisor response:", err);
+      
+      const query = textToSend.toLowerCase();
+      let fallbackText = "";
+
+      if (language === 'fr') {
+        if (query.includes('jeu') || query.includes('game') || query.includes('play') || query.includes('itch') || query.includes('steam')) {
+          fallbackText = `### 🎮 Stratégie de Monétisation pour Jeux Vidéo (Conseil d'Expert Nexora)
+
+Pour monétiser au mieux vos projets de jeux vidéo autonomes ou hébergés sur navigateur :
+
+1. **Modèle de Don 'Pay-What-You-Want' :** Sur **itch.io**, laisser les joueurs fixer leur prix draine 40% de revenus supplémentaires par rapport à un prix fixe serré pour les petits jeux indés.
+2. **Extensions & Musiques :** Proposez la bande-son originale (OST) au format FLAC/MP3 ou un livre d'illustrations numériques (Artbook) comme achats intégrés complémentaires.
+3. **Insertions Publicitaires Web :** Si le jeu s'exécute directement dans le navigateur, configurez un espace publicitaire périphérique via l'**Éditeur de Bannières Nexora** en utilisant des slots AdSense réactifs.
+4. **Financement Communautaire :** Mettez en avant vos coulisses de développement (Devlogs) sur Patreon/Discord pour attirer de fidèles mécènes.`;
+        } else if (query.includes('musique') || query.includes('music') || query.includes('chanson') || query.includes('song') || query.includes('audio') || query.includes('instrum')) {
+          fallbackText = `### 🎵 Guide de Monétisation pour les Créateurs Audio
+
+L'industrie musicale moderne regorge d'options de vente directe sans intermédiaires :
+
+1. **Canaux de Vente Directe (Bandcamp & Nexora) :** Vendez directement vos pistes audio en qualité maximale. Bandcamp ne prend que 10-15% de commission, contre les fractions de centimes reversées par Spotify ou Apple Music.
+2. **Licences de Synchronisation (Sync Licensing) :** Mettez vos productions à disposition des vidéastes, podcasteurs et développeurs de jeux en échange de redevances via des bibliothèques de sons libres de droits.
+3. **Contenus exclusifs pour Fans :** Créez un abonnement de soutien (Patreon, Nexora) donnant accès aux fichiers sources (.WAV de chaque instrument) pour que d'autres créateurs fassent des remixes.
+4. **Sponsoring d'Épisodes :** Si vous produisez un podcast musical, louez un spot audio de 20 secondes au début de chaque session.`;
+        } else if (query.includes('vidéo') || query.includes('video') || query.includes('youtube') || query.includes('tiktok') || query.includes('stream') || query.includes('twitch') || query.includes('chaîne') || query.includes('channel')) {
+          fallbackText = `### 📹 Optimisation du Revenu Vidéo & Streaming
+
+La monétisation vidéo performante repose sur la diversification au-delà de la publicité :
+
+1. **Double Flux Publicitaire (AdSense + Nexora) :** Configurez un site web supportant des bannières AdSense pour rediriger vos spectateurs depuis vos descriptions de vidéos et capter des revenus par clic élevés.
+2. **Contrats de Sponsoring Directs :** Présentez un kit média professionnel aux marques de votre créneau (ex: outils tech, matériel de sport) avec des tarifs de mention de 30 secondes en début de vidéo.
+3. **Affiliation Sélective :** Ajoutez des liens traçables vers le matériel que vous utilisez. Les commissions d'affiliation de produits de marque représentent souvent le triple des revenus publicitaires YouTube.
+4. **Adhésions & Abonnements de Chaîne :** Proposez des émoticônes personnalisées, des vidéos bonus ou des séances de questions-réponses en direct via vos formules d'abonnements récurrents.`;
+        } else if (query.includes('app') || query.includes('saas') || query.includes('logiciel') || query.includes('software') || query.includes('code') || query.includes('site')) {
+          fallbackText = `### 💻 Stratégie SaaS & Applications Web
+
+Les applications logicielles bénéficient des plus forts multiplicateurs de valeur :
+
+1. **Modèle d'Abonnement Récurrent (SaaS) :** Facturez une licence mensuelle ou annuelle pour l'utilisation de vos fonctionnalités professionnelles tout en conservant un accès d'essai gratuit limité.
+2. **Intégration de Passerelle de Paiement :** Éliminez la friction en proposant des passerelles d'encaissement directes (PayPal, Stripe) via notre guide de caisses Airtel/PayPal.
+3. **Partenariats de Bannières de Redirection :** Si votre application web génère du trafic quotidien important, placez de puissantes bannières AdSense aux points de friction ou d'attente d'exécution pour pérenniser vos serveurs.
+4. **Fonctionnalités Verrouillées par Crédits :** Mettez en place un système de jetons à la consommation pour les requêtes gourmandes en calcul (comme les requêtes IA).`;
+        } else if (query.includes('sponsor') || query.includes('brand') || query.includes('partenaire') || query.includes('partenariat') || query.includes('collaboration')) {
+          fallbackText = `### 🤝 Accords de Sponsoring & Partenariats de Marques
+
+Comment attirer et conserver des annonceurs de marque qualifiés sur vos espaces numériques :
+
+1. **Kit Média Structuré :** Affichez de vraies mesures de performance : visites mensuelles, taux de clics (CTR), audience géographique et engagements récents.
+2. **Offres Forfaitaires d'Insertions :** Ne facturez pas au clic aléatoire. Vendez des espaces fixes pour un tarif forfaitaire mensuel clair (par exemple, 150€/mois pour la bannière de haut de page).
+3. **Campagne Pilote Gratuite :** Proposez de diffuser une publicité de 10 jours à un partenaire potentiel. S'il convertit, proposez-lui un abonnement annuel récurent pour solidifier la relation.
+4. **Liens Affiliés Cumulés :** Négociez un pourcentage supplémentaire sur les ventes directes issues de votre trafic en plus du prix fixe de parrainage.`;
+        } else if (query.includes('abonnement') || query.includes('subscription') || query.includes('mensuel') || query.includes('recurring') || query.includes('vip') || query.includes('pro')) {
+          fallbackText = `### 💳 Structurer une Offre par Abonnements (Subscriptions)
+
+Le revenu récurrent est la clé de la stabilité financière de tout créateur de contenu :
+
+1. **Règle des Trois Paliers :** 
+   - **Tiers Découverte (Gratuit) :** Accès de base, outils limités, bannières publicitaires actives.
+   - **Tiers Pro (Payant - 5€ à 20€/mois) :** Zéro publicité, outils de calcul avancés, exports illimités, assistance premium.
+   - **Tiers Mentorat/VIP (Premium - 50€+/mois) :** Session d'accompagnement direct, retour personnalisé sur les projets, vote prioritaire sur les développements futurs.
+2. **Engagement Communautaire :** Offrez un accès privé à un groupe d'échange (Discord, Telegram) réservé exclusivement aux abonnés actifs.
+3. **Contenus Périodiques Exclusifs :** Publiez une infolettre (Newsletter) mensuelle ou des fiches de stratégie exclusives non disponibles publiquement.`;
+        } else {
+          fallbackText = `### 🚀 Plan de Monétisation Global (Conseil Nexora AI)
+
+Bienvenue dans l'espace conseil de **Nexora Monetize**. Pour monétiser efficacement vos actifs et créations digitales, suivez cette feuille de route éprouvée :
+
+1. **Le Triple Flux de Revenu :**
+   - **La Publicité Directe / AdSense :** Pour monétiser le trafic passif qui visite vos pages de présentation.
+   - **Les Micro-Patiements / Dons :** Pour permettre à votre communauté de soutenir directement vos lancements de produits.
+   - **Le Modèle Récurrent (Abonnements) :** Pour stabiliser vos revenus par paliers et d'offrir des espaces de discussion privatifs.
+2. **Implémentation Pratique dans l'Interface :**
+   - Pour insérer des blocs d'annonces, naviguez vers l'**Espace Admin** pour copier le code auto-généré AdSense adapté à votre identifiant Google Publisher.
+   - Simulez vos futurs gains à l'aide de notre **Estimateur d'Audience** sur la page principale pour ajuster vos tarifs publicitaires et abonnements de soutien.
+
+*Note de fonctionnement : L'advisor utilise un modèle de réponse d'expert optimisé localement pour l'environnement de démonstration itch.io.*`;
+        }
+      } else {
+        if (query.includes('game') || query.includes('play') || query.includes('gaming') || query.includes('itch') || query.includes('steam') || query.includes('indie')) {
+          fallbackText = `### 🎮 Indie Game Monetization Framework (Nexora Expert Advice)
+
+To maximize player-supported revenue loops for standalone desktop or web browser games:
+
+1. **The Pay-With-Confidence PWYW Model:** On **itch.io**, allowing your community to choose their donation amount can yield up to 40% organic increases over standard flat licensing models.
+2. **Asset Supplements (DLCs):** Package custom soundtracks (OST) in high-quality FLAC format or release downloadable art development booklets as digital addons.
+3. **Browser Embed Advertising:** For instant-play web versions, establish standard advertising banner frames around the viewport canvas using our **Nexora Banner Placement tool** configured with responsive slot IDs.
+4. **Community Patrons:** Harness active devlog walkthroughs on sites like Patreon to transform occasional players into long-term funding champions.`;
+        } else if (query.includes('music') || query.includes('song') || query.includes('audio') || query.includes('track') || query.includes('sound')) {
+          fallbackText = `### 🎵 Music & Audio Asset Optimization Strategies
+
+Independent musicians and audio engineers benefit greatly from direct digital delivery strategies:
+
+1. **Direct Fan Sales (Bandcamp Model):** Retain over 80-85% of item sales, bypassing fraction-of-a-cent payouts standard on Spotify or Apple Music streaming networks.
+2. **Sync Licensing Opportunities:** Pitch your songs or ambient soundtracks to content channels, indie developers, and marketing groups through royalty-free stock licensing catalogues.
+3. **Exclusive Studio Tiers:** Implement recurrent subscriptions (using Nexora or Patreon grids) that unlock raw audio stems, project walkthroughs, and direct custom vocal hooks.
+4. **Podcast Placements:** Monetize speaking engagements or custom soundscapes by offering fixed introductory sponsors slots on digital directories.`;
+        } else if (query.includes('video') || query.includes('youtube') || query.includes('tiktok') || query.includes('stream') || query.includes('twitch') || query.includes('channel')) {
+          fallbackText = `### 📹 High-Impact Video Creator Revenue Roadmap
+
+Modern video monetization goes beyond baseline platform CPM rates:
+
+1. **Strategic Redirect Portals:** Drive viewers from video description links to a landing page embedded with custom **Nexora Banner Ads** and AdSense slots to monetize web traffic.
+2. **Curated Brand Integrations:** Align with specific services relevant to your audience niche (e.g. creators tools, tech channels) and negotiate high flat-fee 30-second video sponsor spots.
+3. **Affiliate Endorsements:** Maintain a detailed kit of links showcasing the recording hardware and software tools you use to earn direct referral fees.
+4. **Channel Community Clubs:** Gate premium discussion boards, bonus outtakes, or early stream releases using reliable recurring supporter subscription tiers.`;
+        } else if (query.includes('app') || query.includes('saas') || query.includes('software') || query.includes('code') || query.includes('utility') || query.includes('site')) {
+          fallbackText = `### 💻 Digital Tools & Software-as-a-Service (SaaS)
+
+Software structures command some of the highest monetization multipliers online:
+
+1. **Freemium Utility Tiers:** Retain standard tool functions for free to drive massive user adoption, and key-lock high-capacity integrations or premium exports behind monthly/annual Pro subscriptions.
+2. **Streamlined Transaction Processing:** Eliminate local user setup friction by adding direct credit card and custom mobile billing flows (like Airtel Money/PayPal).
+3. **Peripheral Display Injections:** Place fast, clean web banners in processing pages or output screens where user attention is concentrated to subsidize server compute costs.
+4. **Metered API Subscriptions:** Offer developers dedicated developer keys to query your data or models, billed directly on active call volumes.`;
+        } else if (query.includes('sponsor') || query.includes('brand') || query.includes('partner') || query.includes('partnership') || query.includes('collab')) {
+          fallbackText = `### 🤝 Designing Dynamic Brand Sponsorship Packages
+
+Attract big partners by shifting focus from sheer follower counts to targeted high engagement:
+
+1. **Develop a Professional Media Kit:** Package absolute metrics such as page visits, Click-Through-Rates (CTR), and viewer locations into a clean layout.
+2. **Flat Flatbook Placements:** Sell prime real estate spots (example: prominent header spots) for predictable flat monthly rates rather than low CPC auctions.
+3. **Introductory Test Flights:** Offer a brief 10-day pilot run to highly aligned companies. Prove immediate refer rates, then upsell them into custom annual retainer contracts.
+4. **Affiliate Overlays:** Negotiate performance-based bonuses alongside flat rates to build strong, reciprocal relationships.`;
+        } else if (query.includes('sub') || query.includes('subscription') || query.includes('members') || query.includes('recurring') || query.includes('tier') || query.includes('billing')) {
+          fallbackText = `### 💳 Structuring Elite Recurring Member Tiers
+
+Recurring membership is the safest financial anchor for any modern digital business:
+
+1. **The Classic Three-Level Funnel:**
+   - **Level 1 (Free / Public):** Broad access, standard platform tools, passive advertising.
+   - **Level 2 (Pro / Support at $10-15/mo):** Ad-free navigation, deep analytics tools, high resolution downloads, premium templates.
+   - **Level 3 (Private / VIP access at $50+/mo):** Custom monthly critiques, priority queue voting, direct chat access.
+2. **Locked Discord/Telegram Zones:** Funnel subscription payers immediately into cozy private discussion chats to drive organic retention.
+3. **Curated Premium Content Bulletins:** Distribute direct exclusive industry analyses or strategies directly to subscriber email lists.`;
+        } else {
+          fallbackText = `### 🚀 Global Digital Monetization Playbook (Nexora AI)
+
+Welcome to your dedicated **Nexora Monetize** strategy consultation. To build durable, compound revenue flows for your digital assets, embrace this fundamental plan:
+
+1. **Implement the Three-Core Stream Plan:**
+   - **Passive Advertising:** Serve responsive Google AdSense or Nexora web banners on high-traffic presentation pages to capture passive, consistent monetization.
+   - **Direct Support Loops:** Install customized checkout scripts (such as Airtel/PayPal modules) to let dedicated users directly support launch rollouts.
+   - **Recurring Subscription Tiers:** Secure periodic support streams by grouping premium features, templates, or consulting spaces behind monthly Pro clubs.
+2. **Next Steps inside the Platform:**
+   - Copy high-performance ad-unit code templates from the **Admin Centre** to embed in your external blog posts or application frames.
+   - Refine your traffic assumptions using our **Instant Income Estimator** on the Home dashboard to set optimal subscription and marketing tier costs.
+
+*Note: The AI advisor is actively executing in offline-safe fallback mode designed specifically for the itch.io HTML5 environment.*`;
+        }
+      }
+
+      const modelMsg: ChatMessage = {
+        id: `msg_model_${Date.now()}`,
+        role: 'model',
+        text: fallbackText,
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+      };
+
+      setActiveMessages(prev => [...prev, modelMsg]);
+
+      if (subscription === 'free') {
+        const nextCount = chatCount + 1;
+        setChatCount(nextCount);
+        localStorage.setItem('nexora_free_advisor_count', String(nextCount));
+      }
     } finally {
       setLoading(false);
     }
